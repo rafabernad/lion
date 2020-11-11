@@ -145,6 +145,18 @@ describe('<lion-field>', () => {
     expect(el.modelValue).to.equal('foo');
   });
 
+  it('formats on submitted', async () => {
+    const el = /** @type {LionField} */ (await fixture(html`
+      <${tag} .formatter="${(/** @type {string} */ modelValue) => modelValue.toUpperCase()}">
+        ${inputSlot}
+      </${tag}>`));
+    mimicUserInput(el, 'foo');
+    expect(el.value).to.equal('foo');
+    el.submitted = true;
+    await el.updateComplete;
+    expect(el.value).to.equal('FOO');
+  });
+
   describe('Accessibility', () => {
     it(`by setting corresponding aria-labelledby (for label) and aria-describedby (for helpText, feedback)
       ~~~

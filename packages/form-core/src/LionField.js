@@ -54,6 +54,17 @@ export class LionField extends FormControlMixin(
     this._initialModelValue = this.modelValue;
   }
 
+  /**
+   * @param {import('lit-element').PropertyValues } changedProperties
+   */
+  updated(changedProperties) {
+    super.updated(changedProperties);
+
+    if (changedProperties.has('submitted')) {
+      this._reflectBackFormattedValueToUser();
+    }
+  }
+
   connectedCallback() {
     super.connectedCallback();
     this._onChange = this._onChange.bind(this);
@@ -81,7 +92,8 @@ export class LionField extends FormControlMixin(
    * Interaction states are not cleared (use resetInteractionState for this)
    */
   clear() {
-    this.modelValue = ''; // can't set null here, because IE11 treats it as a string
+    // TODO: set to undefined in next breaking release, will be fixed via formatter
+    this.modelValue = ''; // can't set undefined here, because IE11 treats it as a string
   }
 
   _onChange() {
@@ -90,5 +102,12 @@ export class LionField extends FormControlMixin(
         bubbles: true,
       }),
     );
+  }
+
+  /**
+   * @enhance FormatMixin
+   */
+  _reflectBackOn() {
+    return super._reflectBackOn() || this.submitted;
   }
 }
