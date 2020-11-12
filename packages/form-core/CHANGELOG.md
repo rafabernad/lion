@@ -1,5 +1,11 @@
 # Change Log
 
+## 0.6.10
+
+### Patch Changes
+
+- c5c4d4ba: Normalize input values in date comparison validators
+
 ## 0.6.9
 
 ### Patch Changes
