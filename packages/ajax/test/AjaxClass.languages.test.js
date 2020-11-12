@@ -4,7 +4,9 @@ import sinon from 'sinon';
 import { AjaxClass } from '../src/AjaxClass.js';
 
 describe('AjaxClass languages', () => {
+  /** @type {import('sinon').SinonFakeXMLHttpRequestStatic} */
   let fakeXhr;
+  /** @type {import('sinon').SinonFakeXMLHttpRequest[]} */
   let requests;
 
   beforeEach(() => {
@@ -24,7 +26,7 @@ describe('AjaxClass languages', () => {
     document.documentElement.lang = 'en-GB';
     const req = new AjaxClass();
     req.get('data.json');
-    await aTimeout();
+    await aTimeout(0);
     expect(requests.length).to.equal(1);
     expect(requests[0].requestHeaders['Accept-Language']).to.equal('en-GB');
   });
@@ -36,7 +38,7 @@ describe('AjaxClass languages', () => {
     req.post('data2.json');
     req.put('data3.json');
     req.delete('data4.json');
-    await aTimeout();
+    await aTimeout(0);
     expect(requests.length).to.equal(4);
     requests.forEach(request => {
       expect(request.requestHeaders['Accept-Language']).to.equal('en-GB');
@@ -47,7 +49,7 @@ describe('AjaxClass languages', () => {
     document.documentElement.lang = 'nl-NL';
     const req = new AjaxClass();
     req.get('data.json');
-    await aTimeout();
+    await aTimeout(0);
     expect(requests.length).to.equal(1);
     expect(requests[0].requestHeaders['Accept-Language']).to.equal('nl-NL');
   });
@@ -59,7 +61,7 @@ describe('AjaxClass languages', () => {
     req.post('data2.json');
     req.put('data3.json');
     req.delete('data4.json');
-    await aTimeout();
+    await aTimeout(0);
     expect(requests.length).to.equal(4);
     requests.forEach(request => {
       expect(request.requestHeaders['Accept-Language']).to.equal('nl-NL');
@@ -70,7 +72,7 @@ describe('AjaxClass languages', () => {
     document.documentElement.lang = '';
     const req = new AjaxClass();
     req.get('data.json');
-    await aTimeout();
+    await aTimeout(0);
     expect(requests.length).to.equal(1);
     expect(requests[0].requestHeaders['Accept-Language']).to.equal(undefined);
   });
