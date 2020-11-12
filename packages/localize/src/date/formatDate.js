@@ -1,5 +1,8 @@
+import { localize } from '../localize.js';
 import { getLocale } from './getLocale.js';
 import { normalizeIntlDate } from './normalizeIntlDate.js';
+
+/** @typedef {import('../../types/LocalizeMixinTypes').DatePostProcessor} DatePostProcessor */
 
 /**
  * Formats date based on locale and options
@@ -33,5 +36,22 @@ export function formatDate(date, options) {
   } catch (e) {
     formattedDate = '';
   }
+
+  /**
+   * @param {string} accumulatedDate
+   * @param {DatePostProcessor} processor
+   * @returns {string}
+   */
+  const processorReducer = (accumulatedDate, processor) =>
+    processor(accumulatedDate, computedLocale);
+
+  if (formatOptions.postProcessors && formatOptions.postProcessors.length > 0) {
+    formattedDate = formatOptions.postProcessors.reduce(processorReducer, formattedDate);
+  }
+
+  if (localize.__datePostProcessors.length > 0) {
+    formattedDate = localize.__datePostProcessors.reduce(processorReducer, formattedDate);
+  }
+
   return normalizeIntlDate(formattedDate, computedLocale, formatOptions);
 }

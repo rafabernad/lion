@@ -6,6 +6,8 @@ import isLocalizeESModule from './isLocalizeESModule.js';
  * @typedef {import('../types/LocalizeMixinTypes').NamespaceObject} NamespaceObject
  */
 
+/** @typedef {import('../types/LocalizeMixinTypes').DatePostProcessor} DatePostProcessor */
+
 /**
  * `LocalizeManager` manages your translations (includes loading)
  */
@@ -31,6 +33,9 @@ export class LocalizeManager {
     this.formatNumberOptions = {
       returnIfNaN: '',
     };
+
+    /** @type {DatePostProcessor[]} */
+    this.__datePostProcessors = [];
 
     /**
      * Via html[data-localize-lang], developers are allowed to set the initial locale, without
@@ -522,5 +527,10 @@ export class LocalizeManager {
     );
 
     return String(result || '');
+  }
+
+  /** @param {DatePostProcessor} processor */
+  addDatePostprocessor(processor) {
+    this.__datePostProcessors.push(processor);
   }
 }

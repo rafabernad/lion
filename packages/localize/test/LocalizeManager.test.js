@@ -624,6 +624,23 @@ describe('LocalizeManager', () => {
       );
     });
   });
+
+  describe('addDatePostprocessors()', () => {
+    it('has a default value for "__datePostProcessors"', () => {
+      manager = new LocalizeManager();
+      expect(manager.__datePostProcessors).to.deep.equal([]);
+    });
+
+    it('adds processors to the existing "__datePostProcessors"', () => {
+      manager = new LocalizeManager();
+      /**
+       * @param {string} date
+       */
+      const processor = date => date;
+      manager.addDatePostprocessor(processor);
+      expect(manager.__datePostProcessors).to.deep.equal([processor]);
+    });
+  });
 });
 
 describe('When supporting external translation tools like Google Translate', () => {
